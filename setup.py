@@ -35,15 +35,16 @@ with open('README.md') as fh :
 
 
 release = 0
-if release :
-    VERSION = {'version' : __version__}
-else :
-    VERSION = {
-            'use_scm_version': {'version_scheme': 'post-release'},
-            'setup_requires': [
-                'setuptools_scm',
-                'importlib-metadata>=0.12;python_version<"3.8"'],
-            }
+VERSION = {'version' : __version__}
+# if release :
+#     VERSION = {'version' : __version__}
+# else :
+#     VERSION = {
+#             'use_scm_version': {'version_scheme': 'post-release'},
+#             'setup_requires': [
+#                 'setuptools_scm',
+#                 'importlib-metadata>=0.12;python_version<"3.8"'],
+#             }
 
 setup(name='aiWT',
       description=description,
@@ -68,7 +69,5 @@ setup(name='aiWT',
       ],
       packages=find_packages('src'),
       package_dir={'':'src'},
-      scripts=scripts,
       include_package_data=True,
-      extras_require = extras_require,
       install_requires= parse_requirements())
