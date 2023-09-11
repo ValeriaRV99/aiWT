@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "aiWT"
+version = "0.0.1"
+authors = [
+  { name="Valeria", email="vr371@scarletmail.rutgers.edu" },
+]
+description = "Hackathon 2023 building a python package for aiWT functional"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = ""
+"Bug Tracker" = ""
