@@ -22,8 +22,9 @@ from ase import Atoms
 
 
 class airho0(object):
-    def __init__(ions,fileX,fileY,nat=None,ns=None):
-
+    def __init__(ions,X,Y,nat=None,ns=None):
+        self.X = X
+        self.Y = Y
         if nat is not None:
             if nat < len(ions):
                 raise Exception ("nat in airho0 should be larger than the number of atoms")
@@ -35,12 +36,9 @@ class airho0(object):
             self.ns=ns
 
         kernel = ConstantKernel(constant_value=1.0, constant_value_bounds=(1.e-09, 1.e+08)) * Exponentiation(RationalQuadratic(), exponent=1) + WhiteKernel(
-         noise_level=1e-2, noise_level_bounds=(1e-25, 1e1)
-))
+         noise_level=1e-2, noise_level_bounds=(1e-25, 1e1))
         model = GaussianProcessRegressor(kernel=kernel, random_state=0)
-        X_ref = np.load(fileX)
-        y_ref = np.load(fileY)
-        model.fit(X_ref, y_ref)
+        model.fit(self.X, self.Y)
         self.model = model
  
 
@@ -52,63 +50,29 @@ class airho0(object):
         y_pred = self.model.predict(X_pol.reshape(1, -1))
         pred_rho0 = np.zeros(y_pred.shape[0])
         return pred_rho0[0][0]
+    
+    def get_energy(ions, PP_list, aiwt):
+        import copy
+        # self.ions=ions
+        PP_list = PP_list
+        XC = Functional(type='XC',name='LDA')
+        HARTREE = Functional(type='HARTREE')
+        ions = Ions.from_ase(ions)
+        KE = Functional(type='KEDF',name='WT', rho0=aiwt.rho0(ions))
 
-                
-# %%
-def ml_model():
-    kernel = ConstantKernel(constant_value=1.0, constant_value_bounds=(1.e-09, 1.e+08)) * Exponentiation(RationalQuadratic(), exponent=1) + WhiteKernel(
-    noise_level=1e-2, noise_level_bounds=(1e-25, 1e1)
-)
-    model = GaussianProcessRegressor(kernel=kernel, random_state=0)
-    X_ref = np.load('/home/valeria/Documents/DFTPY/cWT-KEDF/Phases/Model_ML_function/training_set_data/organize_data/SM_Btin_fcc_bcc_8cd_dhcp_Btin-hd_65.npy')
-    y_ref = np.load('/home/valeria/Documents/DFTPY/cWT-KEDF/Phases/Model_ML_function/training_set_data/organize_data/rho0_Btin_fcc_bcc_8cd_dhcp_Btin-hd_65.npy')
-    X = X_ref
-    y = y_ref
-    model.fit(X, y)
-    return model
-
-
-# %%
-def get_energy(material, PP_list, aiwt):
-    import copy
-    ml_material = copy.deepcopy(material)
-    of_material = copy.deepcopy(material)
-    charge = int(charge)
-    phase = phase
-    PP_list = PP_list
-    XC = Functional(type='XC',name='LDA')
-    HARTREE = Functional(type='HARTREE')
-    pred_KE = Functional(type='KEDF',name='WT', rho0=aiwt.rho0(ions))
-    ions = Ions.from_ase(of_material)
-    cell = ions.get_cell()
-    ions.set_charges(charge)
-
-    nr = ecut2nr(ecut=25, lattice=ions.cell)
-    grid = DirectGrid(lattice=ions.cell, nr=nr)
-    rho_ini = DirectField(grid=grid)
-    rho_ini[:] = ions.get_ncharges()/ions.cell.volume
-    PSEUDO = LocalPseudo(grid = grid, ions=ions, PP_list=PP_list, rcut=20)
-    predevaluator = TotalFunctional(KE=pred_KE, XC=XC, HARTREE=HARTREE, PSEUDO=PSEUDO)
-    optimization_options = {'econv' : 1e-5*ions.nat}
-    optpred = Optimization(EnergyEvaluator=predevaluator, optimization_options = optimization_options, 
-                       optimization_method = 'TN')
-    predrho = optpred.optimize_rho(guess_rho=rho_ini)
-    predenergy = predevaluator.Energy(rho=predrho, ions=ions)
-    predke = pred_KE(predrho).energy
-    vol = ions.get_volume()
-    return np.asarray(vol), np.asarray(predenergy), np.asarray(predke)
-
-
-
-## Your code in Jupyter Notebook:
-
-fileX='/home/valeria/Documents/DFTPY/cWT-KEDF/Phases/Model_ML_function/training_set_data/organize_data/SM_Btin_fcc_bcc_8cd_dhcp_Btin-hd_65.npy'
-fileY='/home/valeria/Documents/DFTPY/cWT-KEDF/Phases/Model_ML_function/training_set_data/organize_data/rho0_Btin_fcc_bcc_8cd_dhcp_Btin-hd_65.npy'
-aiwt=airho0(ions=ions,fileX=fileX,fileY=fileY,nat=65,ns=180)
-
-# or define your calculator
-get_energy(bla bla bla)
-
-
-
-
+        nr = ecut2nr(ecut=25, lattice=ions.cell)
+        grid = DirectGrid(lattice=ions.cell, nr=nr)
+        PSEUDO = LocalPseudo(grid = grid, ions=ions, PP_list=PP_list, rcut=20)
+        rho_ini = DirectField(grid=grid)
+        rho_ini[:] = ions.get_ncharges()/ions.cell.volume
+        evaluator = TotalFunctional(KE=KE, XC=XC, HARTREE=HARTREE, PSEUDO=PSEUDO)
+        optimization_options = {'econv' : 1e-5*ions.nat}
+        opt = Optimization(EnergyEvaluator=evaluator, optimization_options = optimization_options, 
+                            optimization_method = 'TN')
+        
+        rho = opt.optimize_rho(guess_rho=rho_ini)
+        energy = evaluator.Energy(rho=rho, ions=ions)
+        ke = KE(rho).energy
+        vol = ions.get_volume()
+        print('Volume = ', np.asarray(vol)), print('Energy (Ha) = ', np.asarray(energy)), print('Kinetic energy = ', np.asarray(ke))
+        return np.asarray(energy)
