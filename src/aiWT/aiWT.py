@@ -22,7 +22,7 @@ from ase import Atoms
 
 
 class airho0(object):
-    def __init__(ions,X,Y,nat=None,ns=None):
+    def __init__(self,ions,X,Y,nat=None,ns=None):
         self.X = X
         self.Y = Y
         if nat is not None:
@@ -48,8 +48,7 @@ class airho0(object):
         sine_matrices = sine.create(ions)
         X_pol = np.asarray(sine_matrices)
         y_pred = self.model.predict(X_pol.reshape(1, -1))
-        pred_rho0 = np.zeros(y_pred.shape[0])
-        return pred_rho0[0][0]
+        return y_pred[0][0]
     
     def get_energy(ions, PP_list, aiwt):
         import copy
@@ -74,5 +73,5 @@ class airho0(object):
         energy = evaluator.Energy(rho=rho, ions=ions)
         ke = KE(rho).energy
         vol = ions.get_volume()
-        print('Volume = ', np.asarray(vol)), print('Energy (Ha) = ', np.asarray(energy)), print('Kinetic energy = ', np.asarray(ke))
+        print('Volume = ', np.asarray(vol)), print('Kinetic energy (Ha)= ', np.asarray(ke)), print('Total energy (Ha) = ', np.asarray(energy))
         return np.asarray(energy)

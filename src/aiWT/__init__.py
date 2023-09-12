@@ -1,7 +1,7 @@
 __author__ = "Pavanello Research Group"
 __contact__ = ""
 __license__ = "MIT"
-__version__ = "1.0.1"
+__version__ = "1.0.0"
 __date__ = "2023-09-11"
 
 from .aiWT import *
