@@ -4,7 +4,6 @@ MANIFEST.in
 README.md
 requirements.txt
 setup.py
-src/aiWT/Data.hdf5
 src/aiWT/__init__.py
 src/aiWT/aiWT.py
 src/aiWT.egg-info/PKG-INFO

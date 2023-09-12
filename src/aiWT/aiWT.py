@@ -43,7 +43,6 @@ class airho0(object):
  
 
     def rho0(self,ions):
-        ions = Ions.from_ase(ions)
         sine = SineMatrix(n_atoms_max=self.nat)
         sine_matrices = sine.create(ions)
         X_pol = np.asarray(sine_matrices)
@@ -57,7 +56,8 @@ class airho0(object):
         XC = Functional(type='XC',name='LDA')
         HARTREE = Functional(type='HARTREE')
         ions = Ions.from_ase(ions)
-        KE = Functional(type='KEDF',name='WT', rho0=aiwt.rho0(ions))
+        rho0 = aiwt.rho0(ions)
+        KE = Functional(type='KEDF',name='WT', rho0=rho0)
 
         nr = ecut2nr(ecut=25, lattice=ions.cell)
         grid = DirectGrid(lattice=ions.cell, nr=nr)
@@ -74,4 +74,4 @@ class airho0(object):
         ke = KE(rho).energy
         vol = ions.get_volume()
         print('Volume = ', np.asarray(vol)), print('Kinetic energy (Ha)= ', np.asarray(ke)), print('Total energy (Ha) = ', np.asarray(energy))
-        return np.asarray(energy)
+        return rho0, ke, np.asarray(energy)
