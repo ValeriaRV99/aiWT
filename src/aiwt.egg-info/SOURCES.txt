@@ -1,0 +1,13 @@
+LICENSE
+LICENSE.txt
+MANIFEST.in
+README.md
+requirements.txt
+setup.py
+src/aiwt/__init__.py
+src/aiwt/aiwt.py
+src/aiwt.egg-info/PKG-INFO
+src/aiwt.egg-info/SOURCES.txt
+src/aiwt.egg-info/dependency_links.txt
+src/aiwt.egg-info/requires.txt
+src/aiwt.egg-info/top_level.txt

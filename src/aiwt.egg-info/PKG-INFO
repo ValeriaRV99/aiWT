@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
-Name: aiWT
-Version: 1.0.0
+Name: aiwt
+Version: 1.0.2
 Summary: Python3 packages for Kinetic Energy Density FUnctional with DFTpy
 Home-page: 
 Author: Pavanello Research Group
@@ -20,7 +20,7 @@ Classifier: Topic :: Scientific/Engineering :: Physics
 License-File: LICENSE
 License-File: LICENSE.txt
 Requires-Dist: dftpy>=2.0.0
-Requires-Dist: dscribe>=2.0.1
+Requires-Dist: dscribe>=2.0.0
 Requires-Dist: scikit-learn>=1.3.0
 
 Package implementing aiWT for hackaton 2023.

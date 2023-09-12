@@ -20,7 +20,7 @@ def pip_install_git(link):
     return
 
 
-with open('src/aiWT/__init__.py') as fd :
+with open('src/aiwt/__init__.py') as fd :
     lines = fd.read()
     __version__ = re.search('__version__ = "(.*)"', lines).group(1)
     __author__ = re.search('__author__ = "(.*)"', lines).group(1)
@@ -46,7 +46,7 @@ VERSION = {'version' : __version__}
 #                 'importlib-metadata>=0.12;python_version<"3.8"'],
 #             }
 
-setup(name='aiWT',
+setup(name='aiwt',
       description=description,
       long_description=long_description,
       url='',

@@ -1,10 +1,10 @@
 __author__ = "Pavanello Research Group"
 __contact__ = ""
 __license__ = "MIT"
-__version__ = "1.0.0"
+__version__ = "1.0.2"
 __date__ = "2023-09-11"
 
-from .aiWT import *
+from .aiwt import *
 
 try:
     from importlib.metadata import version # python >= 3.8
@@ -15,6 +15,6 @@ except Exception :
         pass
 
 try:
-    __version__ = version("aiWT")
+    __version__ = version("aiwt")
 except Exception :
     pass
