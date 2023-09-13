@@ -19,12 +19,21 @@ from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.kernel_ridge import KernelRidge
 from dscribe.descriptors import SineMatrix
 from ase import Atoms
-
+from distutils.sysconfig import get_python_lib
+import h5py 
 
 class airho0(object):
-    def __init__(self,ions,X,Y,nat=None,ns=None):
+    def __init__(self,ions,X=None, Y=None, nat=None,ns=None):
+        # if X is not None:
         self.X = X
         self.Y = Y
+        # else:
+        #     path= get_python_lib()
+        #     file = h5py.File(path+"/aiwt/data.hdf5", 'r') 
+        #     self.X = file["Descriptor"] 
+        #     self.Y = file["rho0"]
+        #     file.close
+        
         if nat is not None:
             if nat < len(ions):
                 raise Exception ("nat in airho0 should be larger than the number of atoms")
@@ -56,8 +65,8 @@ class airho0(object):
         XC = Functional(type='XC',name='LDA')
         HARTREE = Functional(type='HARTREE')
         ions = Ions.from_ase(ions)
-        rho0 = aiwt.rho0(ions)
-        KE = Functional(type='KEDF',name='WT', rho0=rho0)
+        rho00 = aiwt.rho0(ions)
+        KE = Functional(type='KEDF',name='WT', rho0=rho00)
 
         nr = ecut2nr(ecut=25, lattice=ions.cell)
         grid = DirectGrid(lattice=ions.cell, nr=nr)
@@ -74,4 +83,4 @@ class airho0(object):
         ke = KE(rho).energy
         vol = ions.get_volume()
         print('Volume = ', np.asarray(vol)), print('Kinetic energy (Ha)= ', np.asarray(ke)), print('Total energy (Ha) = ', np.asarray(energy))
-        return rho0, ke, np.asarray(energy)
+        return rho00, ke, np.asarray(energy)
