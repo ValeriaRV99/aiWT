@@ -1,5 +1,5 @@
 Kinetic Energy Density Functional aiwt 
-==============================
+========================================
 Package implementing aiWT for hackaton 2023.
 
 This repository is currently under development.

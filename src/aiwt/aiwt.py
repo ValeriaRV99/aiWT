@@ -19,8 +19,6 @@ from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.kernel_ridge import KernelRidge
 from dscribe.descriptors import SineMatrix
 from ase import Atoms
-from distutils.sysconfig import get_python_lib
-import h5py 
 
 class airho0(object):
     def __init__(self,ions,X=None, Y=None, nat=None,ns=None):
