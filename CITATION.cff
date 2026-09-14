@@ -1,0 +1,39 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite both the software and the paper below."
+title: "aiWT: machine-learning-augmented Wang-Teter kinetic energy density functional"
+abstract: >-
+  Implementation of a Wang-Teter kinetic energy density functional whose kernel
+  parameter is learned from electron-density data, for use in orbital-free
+  density functional theory calculations.
+authors:
+  - family-names: "Rios-Vargas"
+    given-names: "Valeria"
+    affiliation: "Rutgers University"
+    orcid: "https://orcid.org/ORCID-ID-HERE"
+version: "0.1.0"
+date-released: "2026-01-01"
+license: MIT
+repository-code: "https://github.com/ValeriaRV99/aiWT"
+keywords:
+  - orbital-free DFT
+  - kinetic energy density functional
+  - Wang-Teter
+  - machine learning
+  - electronic structure
+preferred-citation:
+  type: article
+  title: "Effective Wang-Teter kernels for improved orbital-free density functional theory simulations"
+  authors:
+    - family-names: "Rios-Vargas"
+      given-names: "Valeria"
+    - family-names: "Shao"
+      given-names: "Xuecheng"
+    - family-names: "Trickey"
+      given-names: "S. B."
+    - family-names: "Pavanello"
+      given-names: "Michele"
+  journal: "Physical Review B"
+  volume: 110
+  start: 85129
+  year: 2024
+  doi: "10.1103/PhysRevB.110.085129"
